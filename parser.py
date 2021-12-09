@@ -42,12 +42,24 @@ class Parser:
         
     def get_all(self) -> str:
         return self.soup.find_all('div')
-    
-        
-p = Parser('https://sinoptik.com.ru/погода-москва')
 
-weather = p.get_texts(container = 'div', c_class='table__temp', elements=8)
 
-weather = p.get_texts(container='div', c_class='weather__content_tab-temperature', elements=14, dot_container='b')
+    def get_dict(self, container = None, c_class = None, elements = 1, attributs  : list = None) -> dict:
+        if container != None:
+            tags = self.soup.find_all(container, {'class': c_class})
+            if attributs != None:
+                dicts = {}
+                attributs = attributs * elements
+                attributs.sort()
+                for i in range(0, elements+1):
+                    dicts[i] = {}
+                    for att_user in attributs:
+                        for i in dicts.keys():
+                            dicts[i][att_user] = tags[i][att_user]    
+# p = Parser('https://sinoptik.com.ru/погода-москва')
 
-print(f'{weather[2]}, {weather[3]}')
+# weather = p.get_texts(container = 'div', c_class='table__temp', elements=8)
+
+# weather = p.get_texts(container='div', c_class='weather__content_tab-temperature', elements=14, dot_container='b')
+
+# print(f'{weather[2]}, {weather[3]}')
